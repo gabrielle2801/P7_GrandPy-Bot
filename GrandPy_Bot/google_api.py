@@ -1,25 +1,35 @@
 import requests
+import json
+import urllib.request
+from decouple import config
 
 
-def geocode(result_regex):
-    """Summary
+def geocode(address):
+    """Call geocoding google map api
 
     Args:
-        result_regex (TYPE): Description
+        address (STRING): user input
 
     Returns:
-        TYPE: Description
+        dictionary: returns values (address, coordinates)
     """
-    url_geocode = "https://maps.googleapis.com/maps/api/geocode/json?address="
-    response = requests.get(url_geocode + result_regex
-                            + "&key=AIzaSyCAl-yv3W7f05VpqqCm-Ka_zE_hzyzVRfw")
-    response_json = response.json()
+    API_KEY = config('GOOGLE_API_KEY_GEOCODE')
+    '''
+     urllib.parse.urlencode : transforms url string into its component
+    '''
+    params = urllib.parse.urlencode({
+        "address": address,
+        "key": API_KEY,
+        "region": "fr"
+    })
 
-    results = response_json.get("results")
-
-    coordonnees = results[0]["geometry"]["location"]
-    lat = coordonnees["lat"]
-    lng = coordonnees["lng"]
-    #print("latitude&longitude", lat1)
-    print(lat, lng)
-    return lat, lng
+    response = requests.get(
+        "https://maps.googleapis.com/maps/api/geocode/json?", params=params)
+    # print(response.url)
+    if response.status_code == 200:
+        result = response.json()['results']
+        return {
+            "formatted_address": result[0]['formatted_address'],
+            "lat": result[0]['geometry']['location']["lat"],
+            "lng": result[0]['geometry']['location']["lng"],
+        }

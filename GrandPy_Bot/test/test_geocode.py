@@ -1,26 +1,36 @@
-from grandpy_bot.google_api import geocode
-import urllib.request
-
-import requests
-
-class MockResponse:
-
-    # mock json() method always returns a specific testing dictionary
-    @staticmethod
-    def json():
-        return {"mock_key": "mock_response"}
+from grandpy_bot import google_api
 
 
-def test_get_json(monkeypatch):
+def test_get_returns_correct_coordinates(monkeypatch):
+    coordinates = {
 
-    # Any arguments may be passed and mock_get() will always return our
-    # mocked object, which only has the .json() method.
-    def mock_get(*args, **kwargs):
+        'formatted_address': '10 Quai de la Charente, 75019 Paris, France',
+        'lat': 48.8975156,
+        'lng': 2.3833993
+    }
+    class MockResponse:
+
+        status_code = 200
+
+        def json(self):
+            return {
+                "results": [
+                    {
+                        'formatted_address': '10 Quai de la Charente, 75019 Paris, France',
+                        "geometry": {
+                            "location": {
+                                "lat": 48.8975156,
+                                "lng": 2.3833993
+                            }
+                        }
+                    }
+                ]
+            }
+
+    def MockRequestsGet(url, params):
+
         return MockResponse()
 
-    # apply the monkeypatch for requests.get to mock_get
-    monkeypatch.setattr(requests, "get", mock_get)
-
-    # app.get_json, which contains requests.get, uses the monkeypatch
-    result = geocode("Paris")
-    assert result["mock_key"] == "mock_response"
+    monkeypatch.setattr('requests.get', MockRequestsGet)
+    result = google_api.geocode('OpenClassrooms')
+    assert result == coordinates

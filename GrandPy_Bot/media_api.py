@@ -1,25 +1,44 @@
 import requests
 
 
-def wiki_api(request_wiki):
-    """Summary
+def wiki_api(lat, lng):
+    """Call wikipedia api
+
 
     Args:
-        request_wiki (TYPE): Description
+        lat (FLOAT): latitude extract from user input
+        lng (FLOAT): longitude extract from user input
 
     Returns:
-        TYPE: Description
+        dictionary: extract from wikipedia api
+        first paragraph of the wikipedia page
     """
-    url_wiki = "https://fr.wikipedia.org/w/api.php?"
-    # params = "action=query&prop=revisions&rvprop=content&rvsection=0&format=json&titles="
-    params = "action=query&prop=extracts&exsentences=10&exlimit=1&explaintext=1&format=json&titles="
-    wiki_request = url_wiki + params + request_wiki
-    response_wiki = requests.get(wiki_request)
-    response_wiki_json = response_wiki.json()
-    query = response_wiki_json["query"]["pages"]
-    page_id = list(query.keys())[0]
-    print(wiki_request)
-    print(response_wiki)
-    extract = query[page_id]["extract"]
-    print(extract)
-    return extract
+    coord = str(lat) + "|" + str(lng)
+    print(coord)
+
+    params = {
+        "action": "query",
+        "prop": "extracts",
+        "generator": "geosearch",
+        "exsentences": "3",
+        "exlimit": "1",
+        "explaintext": "True",
+        "ggsradius": "200",
+        "ggscoord": coord,
+        "ggslimit": "3",
+        "format": "json",
+
+    }
+
+    response_wiki = requests.get("https://fr.wikipedia.org/w/api.php?",
+                                 params=params)
+    # print(response_wiki.url)
+    if response_wiki.status_code == 200:
+        try:
+            wiki = response_wiki.json()["query"]["pages"]
+            page_id = list(wiki.keys())[0]
+            extract = wiki[page_id]["extract"]
+            return {"extract": extract}
+
+        except KeyError:
+            return "Oospy ..."

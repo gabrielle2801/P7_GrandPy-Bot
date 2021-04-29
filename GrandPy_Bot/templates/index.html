@@ -4,12 +4,19 @@
     <!-- En tête de la page -->
     <meta charset="utf-8" />
     <meta name="viewport"  content="width=device-width, initial-scale=1.0" />
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <!--script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script-->
+
+
     <link rel="stylesheet" href="../static/css/style.css" />
         <link rel="icon" type="image/png" href="../static/image/icon.png">
         <title>GrandPy'Bot</title>
 
     <script src='../static/js/script.js' async></script>
+    <style type="text/css">
+      #map{ /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+        height:400px;
+      }
+    </style>
 
     </head>
 
@@ -45,13 +52,20 @@
             <div class="col-1" style="background-color: #c1c7dc; min-height:30rem">
             </div>
              <div class="col " style = "background-color: #c1c7dc; min-height:30rem">
-                <form action="{{ url_for('index') }}" , method="POST">
+                <form id="user-text-form">
                     <div class="form-group">
-                        <label for="exampleadress">Une adresse ? Un lieu ? Papy Robot a toujours quelque chose à t'apprendre ...</label>
-                        <input type="text" class="form-control" name="name" id="adress" aria-describedby="adresshelp" placeholder="Ecrivez ...">
-                        <small id="adressHelp" class="form-text text-muted">N'oubliez pas de mettre des lettres majuscules pour les noms propres</small>
+                        <label for="userText"></label>
+                        <input type="text"   id="userText" name="userText" placeholder="Ecrivez ...">
+                        <button type="submit" class="btn btn-primary" value="Envoyer">Envoyer</button>
+                        <div class="col" id="address_geocode"></div>
+                        <div  class="col" id="map"></div>
+                            <script
+                              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAt2ZQyLqTd6cTcXkTaufzs7uL78_r5MVg&callback=initMap"
+                              async
+                            ></script>
+                        <div class="col" id="extract_wiki"></div>
                     </div>
-                    <button type="submit" class="btn btn-primary" id="bouton">Submit</button>
+
                 </form>
             </div>
             <div class="col-1" style="background-color: #c1c7dc; min-height:30rem">
