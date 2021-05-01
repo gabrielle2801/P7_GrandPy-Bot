@@ -1,7 +1,7 @@
 import requests
 import json
 import urllib.request
-from decouple import config
+import os
 
 
 def geocode(address):
@@ -13,7 +13,7 @@ def geocode(address):
     Returns:
         dictionary: returns values (address, coordinates)
     """
-    API_KEY = config('GOOGLE_API_KEY_GEOCODE')
+    API_KEY = os.getenv('GOOGLE_API_KEY_GEOCODE')
     '''
      urllib.parse.urlencode : transforms url string into its component
     '''
@@ -25,9 +25,10 @@ def geocode(address):
 
     response = requests.get(
         "https://maps.googleapis.com/maps/api/geocode/json?", params=params)
-    # print(response.url)
+    print(response.url)
     if response.status_code == 200:
         result = response.json()['results']
+        print(result)
         return {
             "formatted_address": result[0]['formatted_address'],
             "lat": result[0]['geometry']['location']["lat"],

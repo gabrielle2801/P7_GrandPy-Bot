@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, jsonify
-from grandpy_bot.parser import parse_search
+from grandpy_bot.parser import parse_search, MatchNotFound
 from grandpy_bot.google_api import geocode
 from grandpy_bot.media_api import wiki_api
+from grandpy_bot.sentences import sentences_choice
 import json
+import os
 
 app = Flask(__name__)
 
@@ -14,8 +16,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-
-    return render_template('index.html')
+    API_KEY = os.getenv('GOOGLE_API_KEY_GEOCODE')
+    return render_template('index.html', key=API_KEY)
 
 
 @app.route('/post_address', methods=['POST'])
@@ -25,15 +27,20 @@ def post_address():
     Returns:
         Json: returns json value
     """
+    regex_request = None
     user_request = request.form["userText"]
     if user_request:
-        regex_request = parse_search(user_request)
+        try:
+            regex_request = parse_search(user_request)
+            print(regex_request)
+        except MatchNotFound:
+            return jsonify({"error": "eroooooooor"})
         response = geocode(regex_request)
-        print(response)
         response_wiki = wiki_api(response["lat"], response["lng"])
-
+        random_sentences = sentences_choice()
         response.update(response_wiki)
-        print(response)
+        response.update(random_sentences)
+
     return jsonify(response)
 
 
