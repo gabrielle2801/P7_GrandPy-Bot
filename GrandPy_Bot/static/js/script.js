@@ -20,6 +20,10 @@ function postFormData(url, data){
 
 form.addEventListener("submit", function(event){
     event.preventDefault();
+    $('#btn-one').html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>Loading...').attr('disabled', true);
+    setTimeout(function(){
+        document.getElementById('userText')
+    }, 1000)
     postFormData("/post_address", new FormData(form))
     .then(response => {
         console.log(response);
@@ -41,9 +45,10 @@ form.addEventListener("submit", function(event){
         newDiv.textContent='Hi there and greetings!';
         var currentDiv = document.getElementById('extract_wiki');
         currentDiv.appendChild(newDiv);
+        document.getElementById("userText").value="";
     }
+
     })
 
 })
-
 
