@@ -1,99 +1,52 @@
-from flask import Flask, render_template, request
-import re
-import requests
+from flask import Flask, render_template, request, jsonify
+from grandpy_bot.parser import parse_search, MatchNotFound
+from grandpy_bot.google_api import geocode
+from grandpy_bot.media_api import wiki_api
+from grandpy_bot.sentences import sentences_address, sentences_wiki
+# import json
+import os
 
 app = Flask(__name__)
 
 
 # Config options - Make sure you created a 'config.py' file.
-app.config.from_object('config')
+# app.config.from_object('config')
 # To get one variable, tape app.config['MY_VARIABLE']
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/')
 def index():
+    API_KEY = os.getenv('GOOGLE_API_KEY_GEOCODE')
+    return render_template('index.html', key=API_KEY)
+
+
+@app.route('/post_address', methods=['POST'])
+def post_address():
     """Summary
 
     Returns:
-        TYPE: Description
+        Json: returns json value
     """
-    user_request = request.form.get('name')
+    regex_request = None
+    user_request = request.form["userText"]
     if user_request:
-        regex_request = regex(user_request)
-        print(regex_request)
+        try:
+            regex_request = parse_search(user_request)
+            print(regex_request)
+        except MatchNotFound:
+            return jsonify({"error": "Oospy... Veuillez recommencer!"})
         response = geocode(regex_request)
-        response_wiki = wiki_api(regex_request)
-        print(response_wiki)
-        print("salut")
-        response_json = response.json()
-        response_wiki_json = response_wiki.json()
-        query = response_wiki_json["query"]
-        # print(query)
-        # print(query.get("extract"))
-        print(response_json)
-        lat = response_json.get("results")
+        response_wiki = wiki_api(response["lat"], response["lng"])
+        random_sentences_address = sentences_address()
+        random_sentences_wiki = sentences_wiki()
+        response.update(response_wiki)
+        response.update(random_sentences_address)
+        response.update(random_sentences_wiki)
+        print("reponse", response)
+    else:
+        return jsonify({"error": "Veuillez remplir le champ du formulaire..."})
 
-        #lat1 = lat.get("0")
-        #lat2 = lat1.get("geometry")
-        #lat3 = lat2.get("location")
-
-        coordonnees = [data.get('location') for data in lat]
-        print(coordonnees)
-        # print(response_wiki_json)
-    return render_template('index.html')
-
-
-def geocode(result_regex):
-    """Summary
-
-    Args:
-        result_regex (TYPE): Description
-
-    Returns:
-        TYPE: Description
-    """
-    url_geocode = "https://maps.googleapis.com/maps/api/geocode/json?address="
-
-    print(url_geocode + result_regex
-          + "&key=AIzaSyCAl-yv3W7f05VpqqCm-Ka_zE_hzyzVRfw")
-    response = requests.get(url_geocode + result_regex
-                            + "&key=AIzaSyCAl-yv3W7f05VpqqCm-Ka_zE_hzyzVRfw")
-    print(response)
-    return response
-
-
-def regex(user_request):
-    """Summary
-
-    Parameters:
-        user_request (TYPE): Description
-
-    Returns:
-        TYPE: Description
-    """
-    result = re.findall(r"[A-Z][a-z]\w+", user_request)
-    result_regex = '+'.join(result)
-    return result_regex
-
-
-def wiki_api(request_wiki):
-    """Summary
-
-    Args:
-        request_wiki (TYPE): Description
-
-    Returns:
-        TYPE: Description
-    """
-    url_wiki = "https://fr.wikipedia.org/w/api.php?"
-    # params = "action=query&prop=revisions&rvprop=content&rvsection=0&format=json&titles="
-    params = "action=query&prop=extracts&exsentences=10&exlimit=1&explaintext=1&format=json&titles="
-    wiki_request = url_wiki + params + request_wiki
-    response_wiki = requests.get(wiki_request)
-
-    print(wiki_request)
-    print(response_wiki)
-    return response_wiki
+    return jsonify(response)
 
 
 if __name__ == "__main__":
