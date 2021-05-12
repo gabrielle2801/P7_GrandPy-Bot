@@ -42,7 +42,7 @@ def post_address():
         response.update(response_wiki)
         response.update(random_sentences_address)
         response.update(random_sentences_wiki)
-        print(response)
+        print("reponse", response)
     else:
         return jsonify({"error": "Veuillez remplir le champ du formulaire..."})
 
