@@ -24,6 +24,7 @@ _______________________________
 **Description du parcours utilisateur**
 
 *Customer Journey*
+
 L'utilisateur ouvre son navigateur et découvre la page avec un formulaire.
 Il tape une question conernant le lieu ou l'adresse qu'il désire dans le champ du formulaire.
 **Salut GrandPy ! Est-ce que tu connais l'adresse d'OpenClassrooms ?**

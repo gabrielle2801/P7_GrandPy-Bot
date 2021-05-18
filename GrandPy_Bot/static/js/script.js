@@ -51,13 +51,13 @@ function extract(response){
     response_wiki(wiki);
     console.log(response['sentences_wiki']);
     reset()
-};
+}
 
 
 function reset(){
     $('#btn-one').html('Envoyer').attr('disabled', false);
     document.getElementById("user-text-form").reset();
-};
+}
 
 
 function message_request(){

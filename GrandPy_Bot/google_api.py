@@ -25,10 +25,8 @@ def geocode(address):
 
     response = requests.get(
         "https://maps.googleapis.com/maps/api/geocode/json?", params=params)
-    # print(response.url)
     if response.status_code == 200:
         result = response.json()['results']
-        # print(result)
         return {
             "formatted_address": result[0]['formatted_address'],
             "lat": result[0]['geometry']['location']["lat"],
