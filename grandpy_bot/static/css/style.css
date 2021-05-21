@@ -1,47 +1,10 @@
-body, html, footer {
+body{
   font-family: helvetica, sans-serif;
-  height: 100%;
-  background-color:  #aeb6bf;
-}
-.message-error{
-  background:  #CD5C5C;
-  border-radius: 20px 20px 2px 20px;
-  max-width: 300px;
-  color: white;
-  margin-left: auto;
-  padding: 13px;
-
-}
-.message-grandpy {
-  background:   #2e4053;
-  border-radius: 20px 20px 2px 20px;
-  max-width: 300px;
-  color: white;
-  margin-left: auto;
-  padding: 13px;
-  margin-bottom: 15px;
-  margin-top: 15px;
 }
 
-.quest-adress{
-  background: #95a5a6;
-  border-radius: 20px 20px 20px 2px;
-  max-width: 300px;
-  color: white;
-  margin: 13px 1px;
-  padding: 13px;
-
-}
-img.img-fluid{
-  display: block;
+img{
+  vertical-align: middle;
   border-style: none;
-  width: auto;
-  margin-left: auto;
-  margin-right: auto;
-  filter: drop-shadow(10px 10px 10px #555);
-}
-.center-image{
-  text-align: center;
 }
 p {
   margin-top: 0;
@@ -71,18 +34,20 @@ h1 {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 .form-control::placeholder {
-  color: #aeb6bf;
+  color:    #34495e;
   opacity: 1;
 }
 
+.container {
+    min-width: 992px !important;
+  }
 hr.my-4{
   border-top: 1px solid #8c8b8b;
 }
 .footer-clean {
   padding:50px 0;
-  background-color:#aeb6bf;
+  background-color:#fff;
   color:#4b4c4d;
-  text-align: center;
 }
 
 .footer-clean ul {
@@ -116,16 +81,4 @@ hr.my-4{
   margin-top:22px;
   color:inherit;
   opacity:0.75;
-}
-
-
-.map {
-  height: 400px;
-  /* The height is 400 pixels */
-  width: 100%;
-  /* The width is the width of the web page */
-}
-.btn-rounded{
-  margin-right: 15px;
-  margin-top: 15px;
 }
