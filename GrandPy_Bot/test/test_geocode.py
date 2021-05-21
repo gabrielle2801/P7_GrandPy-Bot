@@ -1,10 +1,12 @@
+import requests
+
 from grandpy_bot import google_api
 
 
 def test_get_returns_correct_coordinates(monkeypatch):
     coordinates = {
 
-        'formatted_address': '10 Quai de la Charente, 75019 Paris, France',
+        'formatted_address': 'test',
         'lat': 48.8975156,
         'lng': 2.3833993
     }
@@ -16,7 +18,7 @@ def test_get_returns_correct_coordinates(monkeypatch):
             return {
                 "results": [
                     {
-                        'formatted_address': '10 Quai de la Charente, 75019 Paris, France',
+                        'formatted_address': 'test',
                         "geometry": {
                             "location": {
                                 "lat": 48.8975156,
@@ -31,6 +33,6 @@ def test_get_returns_correct_coordinates(monkeypatch):
 
         return MockResponse()
 
-    monkeypatch.setattr('requests.get', MockRequestsGet)
+    monkeypatch.setattr(requests, "get", MockRequestsGet)
     result = google_api.geocode('OpenClassrooms')
     assert result == coordinates
