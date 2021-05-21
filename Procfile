@@ -1,1 +1,1 @@
-web: gunicorn GrandPy_Bot:app
+web: gunicorn grandpy_bot:app
