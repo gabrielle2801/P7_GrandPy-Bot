@@ -1,5 +1,5 @@
 import requests
-import json
+# import json
 import urllib.request
 import os
 
@@ -13,7 +13,7 @@ def geocode(address):
     Returns:
         dictionary: returns values (address, coordinates)
     """
-    API_KEY = os.getenv('GOOGLE_API_KEY_GEOCODE')
+    API_KEY = os.getenv['GOOGLE_API_KEY']
     '''
      urllib.parse.urlencode : transforms url string into its component
     '''
