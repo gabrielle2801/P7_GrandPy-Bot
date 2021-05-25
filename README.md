@@ -42,8 +42,9 @@ ________________________________
 * Mise en ligne avec Heroku
 _____________________________
 
-Méthode Agile -> Users Stories / Tableau de tâches et sous tâches sur Trello :\
+Méthode Agile -> Users Stories / Tableau de tâches et sous tâches sur Trello :
 https://trello.com/b/rek6xyIl/p7-grandpy-bot
+
 Heroku -> https://grandpy-bot-gabrielle.herokuapp.com/
 
 
