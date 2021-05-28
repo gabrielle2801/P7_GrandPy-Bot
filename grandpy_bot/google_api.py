@@ -1,7 +1,10 @@
 import requests
-# import json
 import urllib.request
 import os
+
+
+class AddressNotFound(Exception):
+    pass
 
 
 def geocode(address):
@@ -14,9 +17,8 @@ def geocode(address):
         dictionary: returns values (address, coordinates)
     """
     API_KEY = os.getenv('GOOGLE_API_KEY')
-    '''
-     urllib.parse.urlencode : transforms url string into its component
-    '''
+
+    # urllib.parse.urlencode : transforms url string into its component
     params = urllib.parse.urlencode({
         "address": address,
         "key": API_KEY,
@@ -26,9 +28,13 @@ def geocode(address):
     response = requests.get(
         "https://maps.googleapis.com/maps/api/geocode/json?", params=params)
     if response.status_code == 200:
-        result = response.json()['results']
-        return {
-            "formatted_address": result[0]['formatted_address'],
-            "lat": result[0]['geometry']['location']["lat"],
-            "lng": result[0]['geometry']['location']["lng"],
-        }
+        try:
+            result = response.json()['results']
+            return {
+                "formatted_address": result[0]['formatted_address'],
+                "lat": result[0]['geometry']['location']["lat"],
+                "lng": result[0]['geometry']['location']["lng"],
+            }
+        except IndexError:
+            raise AddressNotFound(
+                "Oospy demande incorrect, reformulez votre demande")

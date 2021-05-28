@@ -6,7 +6,7 @@ from grandpy_bot import google_api
 def test_get_returns_correct_coordinates(monkeypatch):
     coordinates = {
 
-        'formatted_address': 'test',
+        'formatted_address': '10 Quai de la Charente, 75019 Paris, France',
         'lat': 48.8975156,
         'lng': 2.3833993
     }
@@ -18,7 +18,7 @@ def test_get_returns_correct_coordinates(monkeypatch):
             return {
                 "results": [
                     {
-                        'formatted_address': 'test',
+                        'formatted_address': '10 Quai de la Charente, 75019 Paris, France',
                         "geometry": {
                             "location": {
                                 "lat": 48.8975156,

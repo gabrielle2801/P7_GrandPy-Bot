@@ -4,7 +4,7 @@ let map ;
 
 function initMap(lat,lng){
     geocoder = new google.maps.Geocoder();
-    var latlng = new google.maps.LatLng(lat, lng);
+    let latlng = new google.maps.LatLng(lat, lng);
 
   }
 function postFormData(url, data){
@@ -14,7 +14,7 @@ function postFormData(url, data){
 
     })
     .then(response => response.json())
-    .catch(error => console.log(error))
+    .catch(error => console.error(error))
 }
 
 form.addEventListener("submit", function(event){

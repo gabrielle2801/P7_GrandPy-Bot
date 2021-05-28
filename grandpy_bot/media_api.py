@@ -14,7 +14,6 @@ def wiki_api(lat, lng):
         first paragraph of the wikipedia page
     """
     coord = str(lat) + "|" + str(lng)
-    print(coord)
 
     params = {
         "action": "query",
@@ -32,6 +31,7 @@ def wiki_api(lat, lng):
 
     response_wiki = requests.get("https://fr.wikipedia.org/w/api.php?",
                                  params=params)
+    print(response_wiki.url)
     if response_wiki.status_code == 200:
         try:
             wiki = response_wiki.json()["query"]["pages"]
@@ -40,4 +40,4 @@ def wiki_api(lat, lng):
             return {"extract": extract}
 
         except KeyError:
-            return {"extract": "Tiens, cette contrée m'est inconnue ..."}
+            return {"extract": "mais non en fait je ne sais rien concernant ce lieu..."}

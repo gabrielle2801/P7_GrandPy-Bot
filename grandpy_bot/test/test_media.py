@@ -1,3 +1,5 @@
+import requests
+
 from grandpy_bot import media_api
 
 
@@ -36,6 +38,6 @@ def test_get_returns_correct_extract(monkeypatch):
 
         return MockResponse()
 
-    monkeypatch.setattr('requests.get', MockRequestsGet)
+    monkeypatch.setattr(requests,"get", MockRequestsGet)
     result = media_api.wiki_api(48.8975156, 2.3833993)
     assert result == extract

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from grandpy_bot.parser import parse_search, MatchNotFound
-from grandpy_bot.google_api import geocode
+from grandpy_bot.google_api import geocode, AddressNotFound
 from grandpy_bot.media_api import wiki_api
 from grandpy_bot.sentences import sentences_address, sentences_wiki
 # import json
@@ -32,17 +32,18 @@ def post_address():
     if user_request:
         try:
             regex_request = parse_search(user_request)
-            print(regex_request)
         except MatchNotFound:
-            return jsonify({"error": "Oospy... Veuillez recommencer!"})
-        response = geocode(regex_request)
+            return jsonify({"error": "La demande est incorrecte ... Veuillez reformuler"})
+        try:
+            response = geocode(regex_request)
+        except AddressNotFound:
+            return jsonify({"error": "Tiens cette adresse m'est inconnue"})
         response_wiki = wiki_api(response["lat"], response["lng"])
         random_sentences_address = sentences_address()
         random_sentences_wiki = sentences_wiki()
         response.update(response_wiki)
         response.update(random_sentences_address)
         response.update(random_sentences_wiki)
-        print("reponse", response)
     else:
         return jsonify({"error": "Veuillez remplir le champ du formulaire..."})
 

@@ -13,5 +13,4 @@ def parse_search(user_request):
             result_regex = response.group(1).strip()
             return result_regex
     if not response:
-        raise MatchNotFound(
-            "Oospy demande incorrect, reformulez votre demande")
+        raise MatchNotFound("Oospy demande incorrect, reformulez votre demande")

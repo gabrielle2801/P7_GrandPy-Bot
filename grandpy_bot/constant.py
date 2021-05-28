@@ -5,7 +5,8 @@ PATTERN_PARSER = [
     r".*adresse d[e|'|u]\s?(.*)?\?",
     r".*se trouve (.*)?\?",
     r".*ou se trouve ([^\?]*)\?",
-    r".*Où se situent ([^\?]*)\?"
+    r".*où se situent ([^\?]*)\?",
+    r".*ou se trouvent ([^\?]*)\?"
 ]
 
 SENTENCES_ADDRESS = [
